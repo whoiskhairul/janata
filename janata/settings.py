@@ -124,4 +124,4 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = None
 DATE_INPUT_FORMATS = ['%d-%m-%Y', '%Y-%m-%d']
 
 #  Add configuration for static files storage using whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
