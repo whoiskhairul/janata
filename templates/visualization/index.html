@@ -2,79 +2,119 @@
 {% load static %}
 
 {% block title %}
-  Table Visualization
+Table Visualization
 {% endblock title %}
 
 {% block content %}
-  <div class="jumbotron">
-        <h2 class="text-center">Stock Market Index Details</h2>
+<div class="jumbotron">
+  <h2 class="text-center mb-3">Stock Market Index Details</h2>
+</div>
+<div class="container">
+
+  <div class="chartDAta">
+
+    <div class="dropdown border border-dark">
+      <h3 class="text-center">Filter Chart By Trade Code</h3>
+      <select name="dropdown" id="dropdown">
+        {% for code in alltradecode %}
+        {% if code == '1STPRIMFMF' %}
+        <option selected value="{{ code }}">{{ code }}</option>
+        {% else %}
+          <option value="{{ code }}">{{ code }}</option>
+        {% endif %}
+        
+        {% endfor %}
+      </select>
     </div>
-    <div class="container">
-      <div class="dropdown">
-        <select name="dropdown" id="dropdown">
-          {% for code in alltradecode %}
-            {% if code == 'AAMRATECH' %}
-              <option selected value="{{ code }}">{{ code }}</option>
-            {% endif %}
-            <option value="{{ code }}">{{ code }}</option>
-          {% endfor %}
-        </select>
-      </div>
-        <div class="chartvisual" style="height: 400px; width: 50%;">
-            <canvas id="myChart" width="auto" height="auto"></canvas>
-        </div>
-        <div class="chartvisual2" style="height: 400px; width: 50%;">
-          <canvas id="myChartVol" width="auto" height="auto"></canvas>
-      </div>
-        <div class="datedata">
-            {% for d in date %}
-              <p>{{d}}</p>
-            {% endfor %}
-        </div>
-        <table class="table table-hover">
 
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Date</th>
-                <th scope="col">Trade Code</th>
-                <th scope="col">High</th>
-                <th scope="col">Low</th>
-                <th scope="col">Open</th>
-                <th scope="col">Close</th>
-                <th scope="col">Volume</th>
-              </tr>
-            </thead>
-
-            <tbody>
-                {% for elem in obj %}
-                <tr>
-                    <th scope="row">{{forloop.counter}}</th>
-                    <td>{{elem.date}}</td>
-                    <td>{{elem.trade_code}}</td>
-                    <td>{{elem.high}}</td>
-                    <td>{{elem.low}}</td>
-                    <td>{{elem.open}}</td>
-                    <td>{{elem.close}}</td>
-                    <td>{{elem.volume}}</td>
-
-                </tr>
-                {% endfor %}
-
-            </tbody>
-          </table>
-
+    <div class="chartvisual">
+      <canvas id="myChart" width="auto" height="auto"></canvas>
     </div>
-    <script>
-        // var dates = JSON.parse("{{ dates|escapejs }}")
-        // var highs = JSON.parse("{{ highs|escapejs }}")
-        // var lows = JSON.parse("{{ lows|escapejs }}")
-        // var opens = JSON.parse("{{ opens|escapejs }}")
-        // var closes = JSON.parse("{{ closes|escapejs }}")
-        // var volumes = JSON.parse("{{ volumes|escapejs }}")
-        const masterdict = JSON.parse("{{ masterdict|escapejs }}")
-    </script>
 
-    <script src="{% static 'js/script.js' %}"></script>
+  </div>
+  <div class="tableData">
+    <table class="table table-hover table-bordered">
+
+      <thead class="table-success text-center">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Date</th>
+          <th scope="col">Trade Code</th>
+          <th scope="col">High</th>
+          <th scope="col">Low</th>
+          <th scope="col">Open</th>
+          <th scope="col">Close</th>
+          <th scope="col">Volume</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for elem in obj %}
+        <tr>
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{elem.date}}</td>
+          <td>{{elem.trade_code}}</td>
+          <td>{{elem.high}}</td>
+          <td>{{elem.low}}</td>
+          <td>{{elem.open}}</td>
+          <td>{{elem.close}}</td>
+          <td>{{elem.volume}}</td>
+          <td class="text-center">
+            <a href="/edit/{{elem.id}}"><i class="edit-icon fa-solid fa-pen-to-square"></i></a>
+            <i class="delete-icon fa-solid fa-trash-can" title="Not implemented yet"></i>
+
+          </td>
+
+        </tr>
+        {% endfor %}
+
+      </tbody>
+    </table>
+  </div>
+
+  {% if obj.has_other_pages %}
+  <ul class="pagination justify-content-center">
+    {% if obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ obj.previous_page_number }}">&laquo;</a>
+      </li>
+    {% else %}
+      <li class="disabled page-link"><span>&laquo;</span></li>
+    {% endif %}
+    {% for i in obj.paginator.page_range %}
+      {% if obj.number == i %}
+        <li class="active page-item">
+          <span class="page-link">{{ i }} <span class="sr-only"></span></span>
+        </li>
+      {% elif i >= obj.number|add:-10 and i <= obj.number|add:10 %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+        </li>
+
+      {% endif %}
+      
+    {% endfor %}
+    {% if obj.has_next %}
+      <li class="page-link"><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+    {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+    {% endif %}
+  </ul>
+{% endif %}
+
+
+
+</div>
+<script>
+  // var dates = JSON.parse("{{ dates|escapejs }}")
+  // var highs = JSON.parse("{{ highs|escapejs }}")
+  // var lows = JSON.parse("{{ lows|escapejs }}")
+  // var opens = JSON.parse("{{ opens|escapejs }}")
+  // var closes = JSON.parse("{{ closes|escapejs }}")
+  // var volumes = JSON.parse("{{ volumes|escapejs }}")
+  const masterdict = JSON.parse("{{ masterdict|escapejs }}")
+</script>
+
+<script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
-    

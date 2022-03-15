@@ -1,0 +1,35 @@
+.edit-icon{
+    color: #5b89d4;
+    margin-right: 5px;
+}
+
+.delete-icon{
+    color: #cc3d3d;
+    margin-left: 5px;
+}
+
+.dropdown{
+    padding: 10px;
+    float: left;;
+    height: 100%;
+    width: 25%;
+    border: #5b89d4 2px;
+}
+
+.dropdown select{
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(222, 232, 241);
+}
+.dropdown h3{
+    color: green;
+}
+.chartvisual{
+    float: right;
+    width: 75%;
+    
+}
+
+.chartData{
+    display: flex;
+}

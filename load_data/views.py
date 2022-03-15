@@ -1,4 +1,4 @@
-from ast import Return
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.views import View
@@ -45,4 +45,7 @@ class UploadView(View):
 
             
         return render(request, self.template_name, {'form': form})
-        
+
+
+
+    
