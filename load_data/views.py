@@ -25,7 +25,6 @@ class UploadView(View):
             form = UploadFileForm()
             reader = request.FILES['file']
             df = pd.read_csv(reader)
-            print(df)
             for ind in df.index:
                 date = df['date'][ind]
                 trade_code = df['trade_code'][ind]

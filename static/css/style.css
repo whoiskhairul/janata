@@ -33,3 +33,19 @@
 .chartData{
     display: flex;
 }
+
+.editform{
+    width: 35%;
+    margin: auto;
+    margin-top: 50px;
+}
+.editform form{
+    margin: auto;
+}
+
+.editform form table tbody{
+    width: max-content;
+}
+.editform form table tbody tr td input{
+    width: 100%;
+}
