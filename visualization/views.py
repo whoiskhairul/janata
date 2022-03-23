@@ -1,11 +1,12 @@
 from queue import Empty
 from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.views import View
 
 from load_data.models import ReadCSV
 
+import urllib.request as re
 import json
 
 from visualization.forms import EditReadCSVForm
@@ -24,24 +25,28 @@ class TableView(View):
         page_number = request.GET.get('page')
         try:
             page_obj = p.get_page(page_number)
-        except PageNotAnInterger:
+        except PageNotAnInteger:
             page_obj = p.page(1)
         except EmptyPage:
             page_obj = p.page(p.num_pages)
 
         
-        masterDict = {}
+        # masterDict = {}
 
-        for code in allTradecode:
-            masterDict[code] = {
-                'date': list(everything.values_list('date', flat=True).filter(trade_code=code))[::-1],
-                'high': list(everything.values_list('high', flat=True).filter(trade_code=code))[::-1],
-                'low': list(everything.values_list('low', flat=True).filter(trade_code=code))[::-1],
-                'open': list(everything.values_list('open', flat=True).filter(trade_code=code))[::-1],
-                'close': list(everything.values_list('close', flat=True).filter(trade_code=code))[::-1],
-                'volume': list(everything.values_list('volume', flat=True).filter(trade_code=code))[::-1],
-            }
-        masterDict = json.dumps(masterDict)
+        # for code in allTradecode:
+        #     masterDict[code] = {
+        #         'date': list(everything.values_list('date', flat=True).filter(trade_code=code))[::-1],
+        #         'high': list(everything.values_list('high', flat=True).filter(trade_code=code))[::-1],
+        #         'low': list(everything.values_list('low', flat=True).filter(trade_code=code))[::-1],
+        #         'open': list(everything.values_list('open', flat=True).filter(trade_code=code))[::-1],
+        #         'close': list(everything.values_list('close', flat=True).filter(trade_code=code))[::-1],
+        #         'volume': list(everything.values_list('volume', flat=True).filter(trade_code=code))[::-1],
+        #     }
+        # masterDict = json.dumps(masterDict)
+
+        f = open('stock_market_data.json')
+        data = json.load(f)
+        data = json.dumps(data)
         
         context = {
             'obj': page_obj,
@@ -53,7 +58,8 @@ class TableView(View):
             # 'volumes': volumes,
 
             'alltradecode': allTradecode,
-            'masterdict':masterDict,
+            'masterdict':data,
+            'data': data,
 
 
         }
