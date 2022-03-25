@@ -27,16 +27,6 @@ var myChart = new Chart(ctx, {
                 label: "Open",
                 borderColor: "#c9b22e",
             },
-            {
-                data: volume,
-                label: "Volume",
-                borderColor: "#809185",
-                options: {
-                    legend: {
-                        display: false  
-                    }
-                }
-            },
         ]
     }
 });
@@ -61,7 +51,6 @@ function ShowChart(){
             myChart.data.datasets[1].data = high
             myChart.data.datasets[2].data = low
             myChart.data.datasets[3].data = open
-            myChart.data.datasets[4].data = volume
             myChart.data.labels = date
 
             myChart.update()
