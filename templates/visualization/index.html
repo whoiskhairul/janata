@@ -10,31 +10,24 @@ Table Visualization
   <h2 class="text-center mb-3">Stock Market Index Details</h2>
 </div>
 <div class="container">
-
   <div class="chartDAta">
-
     <div class="dropdown border border-dark">
       <h3 class="text-center">Filter Chart By Trade Code</h3>
       <select name="dropdown" id="dropdown">
-        {% for code in alltradecode %}
-        {% if code == '1STPRIMFMF' %}
+        {% for code in alltradecode %} {% if code == '1STPRIMFMF' %}
         <option selected value="{{ code }}">{{ code }}</option>
         {% else %}
-          <option value="{{ code }}">{{ code }}</option>
-        {% endif %}
-        
-        {% endfor %}
+        <option value="{{ code }}">{{ code }}</option>
+        {% endif %} {% endfor %}
       </select>
     </div>
 
     <div class="chartvisual">
       <canvas id="myChart" width="auto" height="auto"></canvas>
     </div>
-
   </div>
   <div class="tableData">
     <table class="table table-hover table-bordered">
-
       <thead class="table-success text-center">
         <tr>
           <th scope="col">#</th>
@@ -61,14 +54,16 @@ Table Visualization
           <td>{{elem.close}}</td>
           <td>{{elem.volume}}</td>
           <td class="text-center">
-            <a href="/edit/{{elem.id}}"><i class="edit-icon fa-solid fa-pen-to-square"></i></a>
-            <i class="delete-icon fa-solid fa-trash-can" title="Not implemented yet"></i>
-
+            <a href="/edit/{{elem.id}}"
+              >Del</i
+            ></a>
+            <i
+              class="delete-icon fa-solid fa-trash-can"
+              title="Not implemented yet"
+            ></i>
           </td>
-
         </tr>
         {% endfor %}
-
       </tbody>
     </table>
   </div>
@@ -76,42 +71,32 @@ Table Visualization
   {% if obj.has_other_pages %}
   <ul class="pagination justify-content-center">
     {% if obj.has_previous %}
-      <li class="page-item">
-        <a class="page-link" href="?page={{ obj.previous_page_number }}">&laquo;</a>
-      </li>
+    <li class="page-item">
+      <a class="page-link" href="?page={{ obj.previous_page_number }}"
+        >&laquo;</a
+      >
+    </li>
     {% else %}
-      <li class="disabled page-link"><span>&laquo;</span></li>
-    {% endif %}
-    {% for i in obj.paginator.page_range %}
-      {% if obj.number == i %}
-        <li class="active page-item">
-          <span class="page-link">{{ i }} <span class="sr-only"></span></span>
-        </li>
-      {% elif i >= obj.number|add:-10 and i <= obj.number|add:10 %}
-        <li class="page-item">
-          <a class="page-link" href="?page={{ i }}">{{ i }}</a>
-        </li>
+    <li class="disabled page-link"><span>&laquo;</span></li>
+    {% endif %} {% for i in obj.paginator.page_range %} {% if obj.number == i %}
+    <li class="active page-item">
+      <span class="page-link">{{ i }} <span class="sr-only"></span></span>
+    </li>
+    {% elif i >= obj.number|add:-10 and i <= obj.number|add:10 %}
+    <li class="page-item">
+      <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+    </li>
 
-      {% endif %}
-      
-    {% endfor %}
-    {% if obj.has_next %}
-      <li class="page-link"><a href="?page={{ obj.next_page_number }}">&raquo;</a></li>
+    {% endif %} {% endfor %} {% if obj.has_next %}
+    <li class="page-link">
+      <a href="?page={{ obj.next_page_number }}">&raquo;</a>
+    </li>
     {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
+    <li class="disabled"><span>&raquo;</span></li>
     {% endif %}
   </ul>
-{% endif %}
-
-
-
+  {% endif %}
 </div>
-<!-- <script>
-  const masterdict = JSON.parse("{{ masterdict|escapejs }}")
-  var data = JSON.parse("{{ data|escapejs }}")
-</script> -->
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
 
-<!-- <script src="{% static 'js/jquery.min.js' %}"></script> -->
 <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}
