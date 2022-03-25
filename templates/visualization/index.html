@@ -6,11 +6,8 @@ Table Visualization
 {% endblock title %}
 
 {% block content %}
-<div class="jumbotron">
-  <h2 class="text-center mb-3">Stock Market Index Details</h2>
-</div>
 <div class="container">
-  <div class="chartDAta">
+  <div class="chartData">
     <div class="dropdown border border-dark">
       <h3 class="text-center">Filter Chart By Trade Code</h3>
       <select name="dropdown" id="dropdown">
@@ -23,10 +20,12 @@ Table Visualization
     </div>
 
     <div class="chartvisual">
+      <h2 class="text-center mb-3" id="com_code" >Stock Data of ABCD</h2>
       <canvas id="myChart" width="auto" height="auto"></canvas>
     </div>
   </div>
   <div class="tableData">
+    <h2 class="text-center mt-3">Data Visualization in Table</h2>
     <table class="table table-hover table-bordered">
       <thead class="table-success text-center">
         <tr>
@@ -54,13 +53,8 @@ Table Visualization
           <td>{{elem.close}}</td>
           <td>{{elem.volume}}</td>
           <td class="text-center">
-            <a href="/edit/{{elem.id}}"
-              >Del</i
-            ></a>
-            <i
-              class="delete-icon fa-solid fa-trash-can"
-              title="Not implemented yet"
-            ></i>
+            <a href="/edit/{{elem.id}}"><i class="bi bi-pencil-square"></i></a>
+            <a href="#" title="Not implemented yet"><i class="bi bi-trash"></i></a>
           </td>
         </tr>
         {% endfor %}

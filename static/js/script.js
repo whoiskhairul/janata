@@ -53,7 +53,9 @@ function ShowChart(){
             close = response.close
             volume = response.volume
             date = response.date
-            console.log(high)
+            tc = response.trade_code
+            console.log(tc)
+            document.getElementById('com_code').innerHTML = tc
 
             myChart.data.datasets[0].data = close
             myChart.data.datasets[1].data = high
