@@ -18,7 +18,6 @@ class TableView(View):
     
     def get(self, request, *args, **kwargs):
         everything = ReadCSV.objects.all()
-        allTradecode = list(dict.fromkeys(list(everything.values_list('trade_code', flat=True))))
 
         p = Paginator(everything, 27)
         page_number = request.GET.get('page')
@@ -29,19 +28,8 @@ class TableView(View):
         except EmptyPage:
             page_obj = p.page(p.num_pages)
 
-        
-        # masterDict = {}
-
-        # for code in allTradecode:
-        #     masterDict[code] = {
-        #         'date': list(everything.values_list('date', flat=True).filter(trade_code=code))[::-1],
-        #         'high': list(everything.values_list('high', flat=True).filter(trade_code=code))[::-1],
-        #         'low': list(everything.values_list('low', flat=True).filter(trade_code=code))[::-1],
-        #         'open': list(everything.values_list('open', flat=True).filter(trade_code=code))[::-1],
-        #         'close': list(everything.values_list('close', flat=True).filter(trade_code=code))[::-1],
-        #         'volume': list(everything.values_list('volume', flat=True).filter(trade_code=code))[::-1],
-        #     }
-        # masterDict = json.dumps(masterDict)
+        allTradecode = list(dict.fromkeys(list(everything.values_list('trade_code', flat=True))))
+        page_trade_code = allTradecode[int(page_number or 1)-1]
 
         f = open('stock_market_data.json')
         data = json.load(f)
@@ -49,22 +37,10 @@ class TableView(View):
         
         context = {
             'obj': page_obj,
-            # 'dates': uniqueDate,
-            # 'highs': highs,
-            # 'lows': lows,
-            # 'opens': opens,
-            # 'closes': closes,
-            # 'volumes': volumes,
-
             'alltradecode': allTradecode,
-            'masterdict':data,
-            'data': data,
-
-
+            'page_trade_code': page_trade_code
         }
-        
-
-
+        print(page_trade_code)
 
         return render(request, self.template_name, context=context)
 

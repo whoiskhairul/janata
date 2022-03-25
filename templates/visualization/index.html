@@ -11,7 +11,7 @@ Table Visualization
     <div class="dropdown border border-dark">
       <h3 class="text-center">Filter Chart By Trade Code</h3>
       <select name="dropdown" id="dropdown">
-        {% for code in alltradecode %} {% if code == '1STPRIMFMF' %}
+        {% for code in alltradecode %} {% if code == page_trade_code %}
         <option selected value="{{ code }}">{{ code }}</option>
         {% else %}
         <option value="{{ code }}">{{ code }}</option>
