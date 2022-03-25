@@ -107,15 +107,11 @@ Table Visualization
 
 </div>
 <script>
-  // var dates = JSON.parse("{{ dates|escapejs }}")
-  // var highs = JSON.parse("{{ highs|escapejs }}")
-  // var lows = JSON.parse("{{ lows|escapejs }}")
-  // var opens = JSON.parse("{{ opens|escapejs }}")
-  // var closes = JSON.parse("{{ closes|escapejs }}")
-  // var volumes = JSON.parse("{{ volumes|escapejs }}")
   const masterdict = JSON.parse("{{ masterdict|escapejs }}")
   var data = JSON.parse("{{ data|escapejs }}")
 </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 
 <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

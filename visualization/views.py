@@ -1,12 +1,13 @@
+from datetime import date
 from queue import Empty
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from django.views import View
 
 from load_data.models import ReadCSV
 
-import urllib.request as re
 import json
 
 from visualization.forms import EditReadCSVForm
@@ -16,8 +17,6 @@ class TableView(View):
     template_name = 'visualization/index.html'
     
     def get(self, request, *args, **kwargs):
-
-
         everything = ReadCSV.objects.all()
         allTradecode = list(dict.fromkeys(list(everything.values_list('trade_code', flat=True))))
 
@@ -95,3 +94,18 @@ class EditData(View):
         else:
             pass
         return render(request, self.template_name, {'form': form})
+
+class GetJson(View):
+    def get(self, request, *args, **kwargs ):
+        trade_code = self.kwargs['trade_code']
+        chart_obj = ReadCSV.objects.filter(trade_code = trade_code).order_by('date')
+        chart_data = {
+            'trade_code': trade_code,
+            'date': [obj.date for obj in chart_obj],
+            'high': [obj.high for obj in chart_obj],
+            'low': [obj.low for obj in chart_obj],
+            'open': [obj.open for obj in chart_obj],
+            'close': [obj.close for obj in chart_obj],
+            'volume': [obj.volume for obj in chart_obj],
+        }
+        return JsonResponse(chart_data)

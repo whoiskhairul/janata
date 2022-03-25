@@ -1,25 +1,4 @@
-var tradecode = document.getElementById('dropdown').value
-var date = []
-var close = []
-var open = []
-var high = []
-var low = []
-for (const elem of data) {
-    if (elem['trade_code'] == tradecode) {
-        // console.log(elem['close'])
-        date.push(elem['date'])
-        close.push(elem['close'])
-        open.push(elem['open'])
-        high.push(elem['high'])
-        low.push(elem['low'])
-    }
-}
-date.reverse()
-close.reverse()
-open.reverse()
-high.reverse()
-low.reverse()
-
+let high, low, open, close, trade_code, volume, date
 
 var ctx = document.getElementById("myChart");
 var myChart = new Chart(ctx, {
@@ -48,58 +27,46 @@ var myChart = new Chart(ctx, {
                 label: "Open",
                 borderColor: "#c9b22e",
             },
+            {
+                data: volume,
+                label: "Volume",
+                borderColor: "#809185",
+                options: {
+                    legend: {
+                        display: false  
+                    }
+                }
+            },
         ]
     }
 });
 
-dropdown = document.getElementById('dropdown')
-dropdown.addEventListener('change', UpdateChart)
-function UpdateChart() {
-    tradecode = dropdown.value
-    // var date = masterdict[tradecode]['date']
-    // var high = masterdict[tradecode]['high']
-    // var low = masterdict[tradecode]['low']
-    // var open = masterdict[tradecode]['open']
-    // var close = masterdict[tradecode]['close']
-    // var volume = masterdict[tradecode]['volume']
+function ShowChart(){
+    const trade_code = document.getElementById('dropdown').value
+    $.ajax({
+        method: 'GET',
+        url: `getjson/${trade_code}`,
+        success: function (response){
+            high = response.high
+            low = response.low
+            open = response.open
+            close = response.close
+            volume = response.volume
+            date = response.date
+            console.log(high)
 
-    // myChart.data.labels = date
-    // myChart.data.datasets[0].data = close
-    // myChart.data.datasets[1].data = high
-    // myChart.data.datasets[2].data = low
-    // myChart.data.datasets[3].data = open
+            myChart.data.datasets[0].data = close
+            myChart.data.datasets[1].data = high
+            myChart.data.datasets[2].data = low
+            myChart.data.datasets[3].data = open
+            myChart.data.datasets[4].data = volume
+            myChart.data.labels = date
 
-    close = []
-    open = []
-    high = []
-    low = []
-    for (const elem of data) {
-        if (elem['trade_code'] == tradecode) {
-            // console.log(elem['close'])
-            close.push(elem['close'])
-            open.push(elem['open'])
-            high.push(elem['high'])
-            low.push(elem['low'])
+            myChart.update()
         }
-
-    }
-    myChart.data.datasets[0].data = close.reverse()
-    myChart.data.datasets[1].data = high.reverse()
-    myChart.data.datasets[2].data = low.reverse()
-    myChart.data.datasets[3].data = open.reverse()
-
-
-    myChart.update()
-
-
-
-
+    })
 }
-clos = []
-for (const elem of data) {
-    if (elem['trade_code'] == '1JANATAMF') {
-        // console.log(elem['close'])
-        clos.push(elem['close'])
 
-    }
-}
+ShowChart()
+dropdown = document.getElementById('dropdown')
+dropdown.addEventListener('change', ShowChart)
